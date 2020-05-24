@@ -14,15 +14,14 @@ io.on('connection', function (socket) {
     socket.on('chat', function (data) {
         socket.broadcast.emit('broadcast', data);
     });
+    socket.on('nickname', function (data) {
+        // emit old and new username for replace reference
+        socket.broadcast.emit('nickname', data);
+    });
     socket.on('disconnect', function(){
         users--;
         usersList.splice(usersList.indexOf(socket.id), 1);
-        console.log('disconnect id:' + socket.id)
-        console.log(usersList)
         socket.broadcast.emit('quit', {id:socket.id, users: usersList})
-    })
-    socket.on('connect', function(){
-
     })
 
     socket.on('connected', function(){
@@ -31,8 +30,6 @@ io.on('connection', function (socket) {
 
     usersList.push(socket.id)
     users++;
-    console.log('connected id:' + socket.id)
-    console.log(usersList)
-    socket.broadcast.emit('newcomer', {id:socket.id, users: usersList})
-    socket.emit('connected', {id: socket.id, users: usersList} );
+    io.emit('newcomer', {id:socket.id, users: usersList})
+    io.emit('connected', {id: socket.id, users: usersList} );
 });

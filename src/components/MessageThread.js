@@ -16,6 +16,7 @@ const Scrollable = styled.div`
     flex: 1;
     overflow-y: auto;
     width: 100%;
+    
 `
 
 function MessageThread(){
@@ -25,7 +26,8 @@ function MessageThread(){
     return (
         <MessageThreadStyle>
             <Scrollable>
-            {messages.length > 1 && messages.map((obj, i) => {
+
+            {messages.length > 0 && messages.map((obj, i) => {
                 return obj &&
                     <Message key={i} content={obj.content} from={obj.user} />
                 }

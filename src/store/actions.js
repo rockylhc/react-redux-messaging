@@ -9,8 +9,20 @@ export const userEntered = () => {
     }
 }
 
+export const updateNickName = (data) => {
+    return {
+        type: actions.BROADCAST_NICKNAME,
+        ...data
+    }
+}
+export const sentNickName = (data) => {
+    return {
+        type: 'socket',
+        types: [null, actions.BROADCAST_NICKNAME],
+        promise: socket => socket.emit('nickname', data)
+    }
+}
 export const updateMessage = (data) => {
-
     return {
         type: actions.BROADCAST_MESSAGE,
         ...data
@@ -41,6 +53,30 @@ export const newUserNotification = (msgAction) => {
     }
 }
 
+export const listenNickNameEvent = (msgAction) => {
+    return {
+        type: 'socket',
+        types: [null, actions.NEW_NICKNAME],
+        promise: socket => socket.on('nickname', msgAction)
+    }
+}
+
+
+export const modalClosed = (data) => {
+    return {
+        type: actions.MODAL_VISIBILITY,
+        modal: false
+    }
+}
+export const closeModal = (data) =>  dispatch => dispatch(modalClosed(data))
+export const modalShow = (data) => {
+    return {
+        type: actions.MODAL_VISIBILITY,
+        modal: true
+    }
+}
+export const openModal = (data) =>  dispatch => dispatch(modalShow(data))
+
 export const userEnter = () => {
     return dispatch => {
         const newMessage = message => {
@@ -49,22 +85,16 @@ export const userEnter = () => {
         const newUser = user => {
             return dispatch({type: actions.NEW_USER, ...user})
         }
+        const newName = user => {
+            return dispatch({type: actions.NEW_NICKNAME, ...user})
+        }
         dispatch(userEntered())
             .then(()=> dispatch(retrieveMessage(newMessage)))
             .then(()=> dispatch(newUserNotification(newUser)))
+            .then(()=> dispatch(listenNickNameEvent(newName)))
 
     }
 }
-
-export const otherUserJoin = () => {
-    return dispatch => {
-        const newUser = user => {
-            return dispatch({type: actions.NEW_USER, ...user})
-        }
-        return dispatch(newUserNotification(newUser))
-    }
-}
-
 
 export const broadcastMessage = (data) => {
     return dispatch => {
@@ -72,4 +102,12 @@ export const broadcastMessage = (data) => {
         dispatch(updateMessage(data))
     }
 }
+
+export const broadcastNickname = (data) => {
+    return dispatch => {
+        dispatch(sentNickName(data))
+        dispatch(updateNickName(data))
+    }
+}
+
 

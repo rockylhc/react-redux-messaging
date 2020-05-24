@@ -5,6 +5,7 @@ import UserList from './UserList';
 import MessageThread from './MessageThread';
 import MessageInput from './MessageInput';
 import styled from 'styled-components';
+import ChangeNickNameModel from './ChangeNickNameModel';
 
 const ChatroomFrame = styled.div`
     display: flex;
@@ -30,22 +31,12 @@ function Chatroom() {
     const [ userMessage, setUserMessage ] = useState('')
     const [ msgIndex, setMsgIndex ] = useState(0);
     const dispatch = useDispatch()
-    const userid = useSelector(state => state.userid)
-    const currentUsers = useSelector(state => state.activeUsers)
-    const emitMessage = () =>{
-        setMsgIndex(msgIndex+1);
-        setUserMessage('foo')
-
-    }
 
     useEffect(()=> {
         dispatch(userEnter())
-        //dispatch(otherUserJoin())
     },[])
     return (
         <ChatroomFrame>
-            <h1>{userid} {currentUsers.length}</h1>
-            {/*<button onClick={emitMessage}>foo +1</button>*/}
             <Left>
                 <UserList />
             </Left>
@@ -53,6 +44,7 @@ function Chatroom() {
                 <MessageThread />
                 <MessageInput />
             </Right>
+            <ChangeNickNameModel />
         </ChatroomFrame>
     )
 }

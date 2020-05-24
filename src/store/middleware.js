@@ -17,11 +17,11 @@ export default function socketMiddleware(socket) {
             return next(action);
         }
         const [REQUEST, SUCCESS] = types;
-        if (REQUEST) next({...rest, type: REQUEST});
+        //if (REQUEST) next({...rest, type: REQUEST});
 
         return promise(socket)
             .then((result) => {
-                return next({...rest, ...result, type: SUCCESS });
+                return result && next({...rest, ...result, type: SUCCESS });
             })
     };
 }

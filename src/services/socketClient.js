@@ -6,9 +6,7 @@ export default class socketAPI {
     connect() {
         this.socket = io.connect(config.socketUrl)
         return new Promise((resolve, reject) => {
-            this.socket.on('connected', (id) => {
-                resolve(id)
-            });
+            this.socket.on('connected', (data) => resolve(data));
             this.socket.on('connect_error', (error) => reject(error));
         });
     }
