@@ -59,7 +59,6 @@ export default {
     },
     externals: {
         config: JSON.stringify({
-            // login: 5ec6074b3200007800d749b9
             socketUrl: 'http://localhost:8081',
         })
     }
