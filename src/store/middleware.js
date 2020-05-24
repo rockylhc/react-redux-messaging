@@ -12,21 +12,16 @@ export default function socketMiddleware(socket) {
          * types: [REQUEST, SUCCESS, FAILURE]
          */
         const { promise, type, types, ...rest } = action;
-
         if (type !== 'socket' || !promise) {
             // Move on! Not a socket request or a badly formed one.
             return next(action);
         }
-
-        const [REQUEST, SUCCESS, FAILURE] = types;
-        next({...rest, type: REQUEST});
+        const [REQUEST, SUCCESS] = types;
+        if (REQUEST) next({...rest, type: REQUEST});
 
         return promise(socket)
             .then((result) => {
-                return next({...rest, result, type: SUCCESS });
-            })
-            .catch((error) => {
-                return next({...rest, error, type: FAILURE });
+                return next({...rest, ...result, type: SUCCESS });
             })
     };
 }

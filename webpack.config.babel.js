@@ -15,15 +15,9 @@ export default {
     output: {
         path: resolve(
             __dirname,
-            'dist',
-        ),
-        filename: isDebug
-            ? '[name].[hash].js'
-            : '[name].bundle.js',
-        publicPath: '/',
-        chunkFilename: isDebug
-            ? '[name].chunk.js'
-            : '[name].bundle.js',
+            'public'
+    ),
+    filename:  'app.js',
     },
     module: {
         rules: [
@@ -62,5 +56,11 @@ export default {
         compress: true,
         historyApiFallback: true,
         hot: true,
+    },
+    externals: {
+        config: JSON.stringify({
+            // login: 5ec6074b3200007800d749b9
+            socketUrl: 'http://localhost:8081',
+        })
     }
 };

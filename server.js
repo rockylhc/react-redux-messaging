@@ -3,22 +3,36 @@ var express = require('express');
 var app = express();
 
 var server = http.createServer(app);
-// Pass a http.Server instance to the listen method
 var io = require('socket.io').listen(server);
-
-// The server should start listening
+var users = 0;
+var usersList = [];
 server.listen(8081);
 
-
-// Handle connection
 io.on('connection', function (socket) {
-    console.log("Connected succesfully to the socket ...");
+    //console.log("Connected successfully to the socket ...");
 
-    socket.emit('connected',{ hello: 'word'})
     socket.on('chat', function (data) {
-        console.log(data);
+        socket.broadcast.emit('broadcast', data);
     });
-    socket.on('disconnect', () => {
-        io.emit('user disconnected');
-    });
+    socket.on('disconnect', function(){
+        users--;
+        usersList.splice(usersList.indexOf(socket.id), 1);
+        console.log('disconnect id:' + socket.id)
+        console.log(usersList)
+        socket.broadcast.emit('quit', {id:socket.id, users: usersList})
+    })
+    socket.on('connect', function(){
+
+    })
+
+    socket.on('connected', function(){
+        console.log('socket connected')
+    })
+
+    usersList.push(socket.id)
+    users++;
+    console.log('connected id:' + socket.id)
+    console.log(usersList)
+    socket.broadcast.emit('newcomer', {id:socket.id, users: usersList})
+    socket.emit('connected', {id: socket.id, users: usersList} );
 });

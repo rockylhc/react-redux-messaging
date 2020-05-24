@@ -1,15 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Chatroom from './components/Chatroom';
 import { Provider } from 'react-redux';
-import { Normalize } from 'styled-normalize';
 import store from './store/configureStore';
+import { createGlobalStyle } from 'styled-components'
+import { normalize } from 'styled-normalize'
 
+export const GlobalStyle = createGlobalStyle`
+  ${normalize}
+  
+  html,body, #root {
+    height:100vh;
+  }
+  body{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+  }
+`
 ReactDOM.render(
   <React.StrictMode>
-    <Normalize />
+      <GlobalStyle />
       <Provider store={store}>
-          <App />
+          <Chatroom />
       </Provider>
   </React.StrictMode>,
   document.getElementById('root')
