@@ -32,4 +32,5 @@ io.on('connection', function (socket) {
     users++;
     io.emit('newcomer', {id:socket.id, users: usersList})
     io.emit('connected', {id: socket.id, users: usersList} );
+    console.log(socket.id)
 });

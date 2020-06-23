@@ -1,10 +1,14 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import reducer from './reducer';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import rootReducer from './reducer';
 import SocketClient from '../services/socketClient';
 import middleware from './middleware';
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+import logger from 'redux-logger'
 const socketClient = new SocketClient()
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(middleware(socketClient))))
+// const store = createStore(reducer, composeEnhancers(applyMiddleware(middleware(socketClient))))
+
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: [middleware(socketClient), ...getDefaultMiddleware().concat(logger)]
+})
 export default store;

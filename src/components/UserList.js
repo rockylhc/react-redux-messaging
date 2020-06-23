@@ -1,8 +1,9 @@
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from './EditIcon';
 import styled from 'styled-components';
 import { openModal } from '../store/actions';
+
 const ListBox = styled.div`
     background: #fefefe;
     border-right: 1px solid #c2c2c2;
@@ -21,11 +22,11 @@ const EditButton = styled.button`
     border: 0;
 `
 
-
 function UserList(){
-    const username = useSelector(state => state.username)
-    const allUsers = useSelector(state => state.activeUsers)
+    const username = useSelector(state => state.app.username)
+    const allUsers = useSelector(state => state.users.list)
     const dispatch = useDispatch()
+
     const showModel =() => {
         dispatch(openModal())
     }
@@ -37,10 +38,10 @@ function UserList(){
                 <EditButton onClick={showModel}><EditIcon /></EditButton>
             </NameList>
 
-            { allUsers.map((name, i)=>{
+            { allUsers.length > 0 && allUsers.map(({userid}) => {
                 return (
                     (username !== name) &&
-                    <NameList key={i}>{name}</NameList>
+                    <NameList key={userid}>{userid}</NameList>
                 )
             }) }
         </ListBox>

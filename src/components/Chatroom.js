@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userEnter, otherUserJoin } from '../store/actions';
+import { enterChat } from '../store/appSlice';
 import UserList from './UserList';
 import MessageThread from './MessageThread';
 import MessageInput from './MessageInput';
@@ -26,15 +26,21 @@ const Right = styled.div`
     flex-flow: column wrap;
 `
 
-
 function Chatroom() {
-    const [ userMessage, setUserMessage ] = useState('')
-    const [ msgIndex, setMsgIndex ] = useState(0);
     const dispatch = useDispatch()
 
     useEffect(()=> {
-        dispatch(userEnter())
+        dispatch(enterChat())
     },[])
+
+   return(
+    <ChatroomFrame>
+        <Left>
+            <UserList />
+        </Left>
+    </ChatroomFrame>
+   );
+   /*
     return (
         <ChatroomFrame>
             <Left>
@@ -46,7 +52,7 @@ function Chatroom() {
             </Right>
             <ChangeNickNameModel />
         </ChatroomFrame>
-    )
+    )*/
 }
 
 export default Chatroom;
