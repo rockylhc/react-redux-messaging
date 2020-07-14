@@ -5,10 +5,9 @@ import middleware from './middleware';
 import logger from 'redux-logger'
 const socketClient = new SocketClient()
 
-// const store = createStore(reducer, composeEnhancers(applyMiddleware(middleware(socketClient))))
-
 const store = configureStore({
     reducer: rootReducer,
-    middleware: [middleware(socketClient), ...getDefaultMiddleware().concat(logger)]
+    middleware: [middleware(socketClient), logger, ...getDefaultMiddleware()],
+    devTools: true
 })
 export default store;

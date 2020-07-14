@@ -29,7 +29,7 @@ function MessageThread(){
 
             {messages.length > 0 && messages.map((obj, i) => {
                 return obj &&
-                    <Message key={i} content={obj.content} from={obj.user} />
+                    <Message key={i} content={obj.content} from={obj.from} type={obj.type} />
                 }
             )}
             </Scrollable>

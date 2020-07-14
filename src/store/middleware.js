@@ -5,15 +5,15 @@ export default function socketMiddleware(socket) {
         }
 
         const { promise, type, types, ...rest } = action;
-        if (type !== 'socket' || !promise) {
+        if (type !== 'socket' || !promise ) {
+
             return next(action);
         }
 
-        const { SUCCESS } = types;
 
         return promise(socket)
             .then((result) => {
-                return result && next({...rest, ...result, type: SUCCESS });
+                return next({...rest, ...result, type: types })
             })
     };
 }

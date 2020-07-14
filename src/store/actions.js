@@ -1,10 +1,3 @@
-import { createAction } from '@reduxjs/toolkit';
-
-export const enterChat = createAction('enterChat')
-export const broadcastNickname = createAction('broadcastNickname')
-export const closeModal = createAction('closeModal')
-export const broadcastMessage = createAction('broadcastMessage')
-
 /*
 import * as types from './actionTypes';
 import * as actions from './actionTypes';

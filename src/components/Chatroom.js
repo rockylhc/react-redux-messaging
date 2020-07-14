@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { enterChat } from '../store/appSlice';
+import { enterChat, connectSocket } from '../store/appSlice';
 import UserList from './UserList';
 import MessageThread from './MessageThread';
 import MessageInput from './MessageInput';
@@ -14,12 +14,12 @@ const ChatroomFrame = styled.div`
     flex-grow: 1;
 `
 
-const Left = styled.div`
+const Sidebar = styled.div`
     display: flex;
     flex-basis: 10rem;
 `
 
-const Right = styled.div`
+const Container = styled.div`
     display: flex;
     height: 100%;
     flex-grow: 1;
@@ -30,14 +30,18 @@ function Chatroom() {
     const dispatch = useDispatch()
 
     useEffect(()=> {
-        dispatch(enterChat())
+        dispatch(connectSocket())
     },[])
 
    return(
     <ChatroomFrame>
-        <Left>
+        <Sidebar>
             <UserList />
-        </Left>
+        </Sidebar>
+        <Container>
+            <MessageThread />
+        </Container>
+        <ChangeNickNameModel />
     </ChatroomFrame>
    );
    /*

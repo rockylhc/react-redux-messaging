@@ -12,16 +12,18 @@ io.on('connection', function (socket) {
     //console.log("Connected successfully to the socket ...");
 
     socket.on('chat', function (data) {
-        socket.broadcast.emit('broadcast', data);
+        socket.broadcast.emit('message', data);
     });
-    socket.on('nickname', function (data) {
+    socket.on('broadcast', function (data, fn) {
         // emit old and new username for replace reference
-        socket.broadcast.emit('nickname', data);
+        socket.broadcast.emit('message', {payload: data, type: 'user'});
+        fn({payload: data})
     });
     socket.on('disconnect', function(){
         users--;
         usersList.splice(usersList.indexOf(socket.id), 1);
-        socket.broadcast.emit('quit', {id:socket.id, users: usersList})
+        //socket.broadcast.emit('quit', {payload:{userid:socket.id, users: usersList}})
+        io.emit('message', {payload:{userid:socket.id, users: usersList, notification: 'system', type:'quit'}})
     })
 
     socket.on('connected', function(){
@@ -30,7 +32,7 @@ io.on('connection', function (socket) {
 
     usersList.push(socket.id)
     users++;
-    io.emit('newcomer', {id:socket.id, users: usersList})
-    io.emit('connected', {id: socket.id, users: usersList} );
-    console.log(socket.id)
+    io.emit('message', {payload:{userid:socket.id, users: usersList, notification: 'system', type: 'join'}})
+    io.emit('connected', {payload:{userid: socket.id, users: usersList}} );
+    console.log(usersList)
 });

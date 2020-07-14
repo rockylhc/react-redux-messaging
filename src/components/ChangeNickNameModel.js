@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import {broadcastNickname, closeModal} from '../store/actions';
+import { toggleModal, changeNickName } from "../store/appSlice";
 
 const ModalBox = styled.div`
     position: fixed;
@@ -46,21 +46,20 @@ const ButtonStyle = styled.button`
 function ChangeNickNameModel(){
     let input;
     const dispatch = useDispatch();
-    const modalState = useSelector( state=> state.modal);
-    const username = useSelector(state => state.userid)
+    const modalState = useSelector( state=> state.app.modal);
+    const username = useSelector(state => state.app.userid)
 
     const CloseModal = () =>{
         input.value = ''
-        dispatch(closeModal())
+        dispatch(toggleModal(false))
     }
 
     const ProceedChangeNickname = () =>{
         if (!input.value.trim()) {
             return
         }
-        dispatch(broadcastNickname({old:username, username: input.value}))
-        dispatch(closeModal())
-        input.value = ''
+        dispatch(changeNickName({old:username, username: input.value}))
+        CloseModal()
     }
 
     return (
