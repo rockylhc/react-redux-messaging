@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleModal, changeNickName } from "../store/appSlice";
+import { toggleModal } from "../store/appSlice";
 
 const ModalBox = styled.div`
     position: fixed;
@@ -58,7 +58,7 @@ function ChangeNickNameModel(){
         if (!input.value.trim()) {
             return
         }
-        dispatch(changeNickName({old:username, username: input.value}))
+        dispatch(changeNickName({old:username, username: input.value, type:'nickname'}))
         CloseModal()
     }
 

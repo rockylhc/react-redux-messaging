@@ -16,14 +16,14 @@ io.on('connection', function (socket) {
     });
     socket.on('broadcast', function (data, fn) {
         // emit old and new username for replace reference
-        socket.broadcast.emit('message', {payload: data, type: 'user'});
+        socket.broadcast.emit('message', { payload:{ ...data, notification: 'user'}} );
         fn({payload: data})
     });
     socket.on('disconnect', function(){
         users--;
         usersList.splice(usersList.indexOf(socket.id), 1);
         //socket.broadcast.emit('quit', {payload:{userid:socket.id, users: usersList}})
-        io.emit('message', {payload:{userid:socket.id, users: usersList, notification: 'system', type:'quit'}})
+        io.emit('message', {payload:{ userid:socket.id, users: usersList, notification: 'system', type:'quit'} })
     })
 
     socket.on('connected', function(){

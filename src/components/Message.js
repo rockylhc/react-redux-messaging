@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const SpeechBubble = styled.div`
@@ -21,23 +21,24 @@ const UserLabel = styled.h5`
 `
 const MessageStyle = styled.p`
     margin: .5rem; 
+    color: ${props => (props.notification ? '#9d9d9d': '#000')};
+    font-size: ${props => (props.notification ? '.75rem': '1rem')}
 `
 
 
 function Message(props){
     const { content, from, type } = props
-    const userid = useSelector(state => state.userid)
+    const userid = useSelector(state => state.app.userid)
 
-    console.log(type)
     return (
         <SpeechBubble
             position={from ==='system' ? 'center' : from === userid ? 'left' : 'right'}>
-            {from !== userid || 'system' && <UserLabel>{userid}:</UserLabel> }
-            <MessageStyle>
+            {from !== 'system' && <UserLabel>{ from }:</UserLabel> }
+            <MessageStyle notification={ from ==='system' }>
                 { from === 'system' ?
-                    `${ content } has ${type == 'join'?'joined':'quit'}`
+                    `${ content } has ${type === 'join'?'joined':'quit'}`
                     :
-                { content }
+                 content
                 }
             </MessageStyle>
         </SpeechBubble>

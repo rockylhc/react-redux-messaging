@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuid } from 'uuid';
 
-
-
 export const connectSocket = createAsyncThunk(
     'app/connectApp',
     async (data, { dispatch }) => {
@@ -18,6 +16,20 @@ export const connectSocket = createAsyncThunk(
         dispatch(listenBroadcast( (msg)=>{
             return dispatch({type: gotMessage.type, ...msg})
         }))
+    }
+)
+
+export const broadcastMessage = createAsyncThunk(
+    'app/pingApp',
+    async (data, { dispatch }) => {
+        await dispatch({
+            type: 'socket',
+            types: sentMessage.type,
+            promise: socket => socket.emit('broadcast', data)
+        })
+        .then(response => {
+            return response;
+        })
     }
 )
 
@@ -41,13 +53,8 @@ const appSlice = createSlice({
         mint: true,
     },
     reducers:{
-        enterChat: {
-            reducer: (state,  { payload } ) => {
-                state.userid = payload.userid;
-            },
-            prepare: state => {
-                return { payload: { id: 'bar', state } }
-            }
+        enterChat: (state,  { payload } ) => {
+            state.userid = payload.userid;
         },
         toggleModal:{
             reducer: (state, { payload }) => {
@@ -57,21 +64,8 @@ const appSlice = createSlice({
                 return { payload: {id:'foo', state }}
             }
         },
-        sentMessage: (state, { payload }) =>{
-            state.username = payload.username
-        },
-        gotMessage:{
-            reducer: (state, { payload }) => {
-                console.log(state, payload)
-                if (payload && payload.notification ==='system'){
-                    //state.userid = payload.userid;
-                }
-            },
-            prepare: state => {
-                console.log(state)
-                return { payload: {id:'haha', state}}
-            }
-        }
+        sentMessage: (state, { payload }) =>{},
+        gotMessage:(state, { payload }) => {}
     },
     extraReducers:{
         [ connectSocket.pending ]: (state, action) => {

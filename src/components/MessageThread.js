@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Message from './Message';
 import styled from 'styled-components';
 
@@ -16,20 +16,17 @@ const Scrollable = styled.div`
     flex: 1;
     overflow-y: auto;
     width: 100%;
-    
 `
 
 function MessageThread(){
-    const dispatch = useDispatch()
     const messages = useSelector(state => state.messages)
 
     return (
         <MessageThreadStyle>
             <Scrollable>
-
-            {messages.length > 0 && messages.map((obj, i) => {
+            {messages && messages.map((obj, i) => {
                 return obj &&
-                    <Message key={i} content={obj.content} from={obj.from} type={obj.type} />
+                    <Message key={obj.id}  {...obj} />
                 }
             )}
             </Scrollable>

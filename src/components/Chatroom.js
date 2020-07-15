@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { enterChat, connectSocket } from '../store/appSlice';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { connectSocket } from '../store/appSlice';
 import UserList from './UserList';
 import MessageThread from './MessageThread';
 import MessageInput from './MessageInput';
@@ -40,23 +40,11 @@ function Chatroom() {
         </Sidebar>
         <Container>
             <MessageThread />
+            <MessageInput />
         </Container>
         <ChangeNickNameModel />
     </ChatroomFrame>
    );
-   /*
-    return (
-        <ChatroomFrame>
-            <Left>
-                <UserList />
-            </Left>
-            <Right>
-                <MessageThread />
-                <MessageInput />
-            </Right>
-            <ChangeNickNameModel />
-        </ChatroomFrame>
-    )*/
 }
 
 export default Chatroom;

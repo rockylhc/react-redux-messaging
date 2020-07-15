@@ -9,11 +9,15 @@ const usersSlice = createSlice({
     },
     reducers:{},
     extraReducers: {
+        [ appActions.enterChat.type ]: (state, {payload})=>{
+            if( payload && payload.users ){
+                state.list = payload.users;
+            }
+        },
         [ appActions.gotMessage.type ]: (state, {payload})=>{
             if( payload && payload.users ){
                 state.list = payload.users;
             }
-            //state.list.push({ userid: payload.userid } )
         }
     }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
-import { broadcastMessage } from '../store/actions';
-import {useDispatch, useSelector} from 'react-redux';
+import { broadcastMessage } from '../store/appSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const InputBar = styled.form`
@@ -32,13 +32,13 @@ const SubmitButtonStyle = styled.button`
 function MessageInput(){
     let input
     const dispatch = useDispatch()
-    const user = useSelector(state => state.userid)
+    const user = useSelector(state => state.app.userid)
     const emitMessage = (e) =>{
         e.preventDefault()
         if (!input.value.trim()) {
             return
         }
-        dispatch(broadcastMessage({content: input.value, user }))
+        dispatch(broadcastMessage({ content: input.value, from: user, type: 'chat' }))
         input.value = ''
     }
 
@@ -47,7 +47,6 @@ function MessageInput(){
             <InputStyle ref={node => (input = node)} />
             <SubmitButtonStyle type='submit'>Send</SubmitButtonStyle>
         </InputBar>
-
     )
 }
 

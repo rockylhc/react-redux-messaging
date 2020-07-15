@@ -9,10 +9,29 @@ const messagesSlice = createSlice({
     extraReducers: {
         [ appActions.gotMessage.type ]: (state, {payload})=>{
             if( payload && payload.type ){
+                switch(payload.notification) {
+                    case 'system':
+                        state.push({
+                            id: uuid(),
+                            from: payload.notification,
+                            type: payload.type,
+                            content: payload.userid
+                        })
+                        break;
+                    case 'user':
+                        state.push({
+                            id: uuid(),
+                            ...payload
+                        })
+                        break;
+                }
+            }
+        },
+        [ appActions.sentMessage.type ]: (state, {payload})=>{
+            if( payload && payload.type ){
                 state.push({
-                    from: payload.notification,
-                    type: payload.type,
-                    content: payload.userid
+                    id: uuid(),
+                    ...payload
                 })
             }
         }
